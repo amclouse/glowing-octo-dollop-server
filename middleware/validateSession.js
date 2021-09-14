@@ -12,9 +12,9 @@ const validateJWT = async (req, res, next) => {
                 authorization.includes('Bearer') ? authorization.split(' ')[1] : authorization,
                 process.env.JWT_SECRET
             ) : undefined;
-    
+                    
             if (payload) {
-                console.log(payload);
+
                 let foundUser = await models.UsersModel.findOne({
                     where: {
                         id: payload.id
@@ -36,7 +36,8 @@ const validateJWT = async (req, res, next) => {
             });
         };
     } catch (error) {
-        res.status(401).json({ msg: "Invalid token", error})
+        console.log(error)
+        res.status(401).json({ msg: "Invalid token", err: `${error}`})
 
     }
 };

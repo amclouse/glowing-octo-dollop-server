@@ -9,22 +9,23 @@ router.post("/signup", async (req, res) => {
   const { username, password } = req.body.user;
 
   try {
-    let token = jwt.sign({ id: models.UsersModel.id }, process.env.JWT_SECRET, {
-      expiresIn: 60 * 60 * 24,
-    });
+    
     //Initial creation, use object destructuring to funnel data into correct keys/values of req.body.user
-    await models.UsersModel.create({
+    let newUser = await models.UsersModel.create({
       username: username,
       password: bcrypt.hashSync(password, 10),
       // role: role,
-      token: token
+      // token: token
     })
       //Send status 201, confirming user was created and send back json object to client.
       .then((user) => {
+        // let token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
+        //   expiresIn: 60 * 60 * 24,
+        // });
         res.status(201).json({
           user: user,
           message: "user created",
-          token: `Bearer ${token}`
+          // token: `Bearer ${token}`
         });
       });
   } catch (error) {
@@ -63,6 +64,7 @@ router.post("/login", async (req, res) => {
       );
       //If password comparison matches, assign a token that expires in 24 hrs
       if (passwordComparison) {
+        
         let token = jwt.sign({ id: loginUser.id }, process.env.JWT_SECRET, {
           expiresIn: 60 * 60 * 24,
         });
