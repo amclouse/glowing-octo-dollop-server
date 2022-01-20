@@ -1,9 +1,11 @@
 const Express = require("express");
 const router = Express.Router();
-const { models } = require("../models");
+const { models } = require("../db");
 const bcrypt = require("bcryptjs");
 const { UniqueConstraintError } = require("sequelize/lib/errors");
 const jwt = require("jsonwebtoken");
+// const { values } = require("sequelize/types/lib/operators");
+const { validateSession } = require("../middleware");
 
 router.post("/signup", async (req, res) => {
   const { username, password } = req.body.user;
@@ -11,7 +13,7 @@ router.post("/signup", async (req, res) => {
   try {
     
     //Initial creation, use object destructuring to funnel data into correct keys/values of req.body.user
-    let newUser = await models.UsersModel.create({
+    let newUser = await models.UserModel.create({
       username: username,
       password: bcrypt.hashSync(password, 10),
       // role: role,
@@ -50,7 +52,7 @@ router.post("/login", async (req, res) => {
 
   try {
     //Use object destructuring to funnel data into correct keys/values of req.body.user
-    let loginUser = await models.UsersModel.findOne({
+    let loginUser = await models.UserModel.findOne({
       //Test if username matches an entry
       where: {
         username: username,
@@ -94,5 +96,28 @@ router.post("/login", async (req, res) => {
     });
   };
 });
+
+//! Add student
+router.post("/addStudent", validateSession, (req, res) => {
+
+  let { userId, studentList } = req.user.id
+
+  let query = {
+    where: {
+      userId: userId,
+    }
+  }
+
+  try {
+    
+    let addStudent = models.UsersModel.create({
+      
+    })
+
+  } catch (error) {
+    
+  }
+
+})
 
 module.exports = router

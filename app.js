@@ -1,7 +1,7 @@
 require("dotenv").config();
 const Express = require("express");
 const app = Express();
-const dbConnection = require("./db");
+const dbConnection = require("./db/db");
 const controllers = require("./controllers");
 const middleware = require("./middleware");
 
@@ -18,7 +18,8 @@ dbConnection.authenticate()
         dbConnection.sync()
     })
     .then(app.listen(process.env.PORT, () => {
-        console.log('Got it workin???');
+        console.log(`Listening ${process.env.PORT}`);
+
     }))
     .catch(err => {
         console.log(`Server crashed ${err}`);

@@ -5,7 +5,7 @@ const Applications = db.define("applications", {
   companyName: {
     type: DataTypes.STRING,
   },
-  role: {
+  position: {
     type: DataTypes.STRING,
   },
   date: {
@@ -13,9 +13,6 @@ const Applications = db.define("applications", {
   },
   status: {
     type: DataTypes.STRING,
-  },
-  userId: {
-    type: DataTypes.UUID
   }
 });
 
